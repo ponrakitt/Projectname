@@ -1,313 +1,351 @@
 <!DOCTYPE html>
-<html lang="th" data-theme="auto">
+<html lang="th">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ขอบคุณนะ</title>
-<meta name="theme-color" content="#ffd9e6"/>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ลอยกระทงออนไลน์</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap">
 <style>
-  :root{
-    --bg:#fff6fa; --card:#ffffff; --text:#3a2a33; --muted:#6b6b6b;
-    --accent:#ff6b9e; --accent2:#ffcad4; --ok:#16a34a; --lock:#7c3aed;
-    --ring:rgba(255,107,158,.35);
-    --shadow:0 10px 30px rgba(0,0,0,.10);
-    --radius:24px; --vh:1vh;
-  }
-  @media (prefers-color-scheme: dark){
-    [data-theme="auto"]{
-      --bg:#0f0a11; --card:#17121a; --text:#f5e9f1; --muted:#bca9b5;
-      --accent:#ff8fb5; --accent2:#4d2838; --ok:#34d399; --lock:#a78bfa;
-      --ring:rgba(255,143,181,.25); --shadow:0 10px 30px rgba(0,0,0,.45);
-    }
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%; margin:0}
-  body{
-    font-family: ui-rounded, "Noto Sans Thai", "Sarabun", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:
-      radial-gradient(1200px 1200px at 100% -10%, var(--accent2) 0%, transparent 60%),
-      radial-gradient(900px 900px at -10% 110%, var(--accent2) 0%, transparent 60%),
-      var(--bg);
-    color:var(--text); line-height:1.6;
-  }
-  .wrap{ min-height:calc(var(--vh)*100); display:grid; place-items:center; padding:20px; }
-  .card{ width:min(980px,100%); background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
-         border:1px solid rgba(255,255,255,.12); padding:clamp(16px,3vw,28px); }
-  .title{ display:flex; align-items:center; justify-content:center; gap:10px; font-size:clamp(22px,4.5vw,34px); font-weight:800; margin:0 0 4px; }
-  .subtitle{ text-align:center; color:var(--muted); margin:0 0 18px; font-size:clamp(12px,2.6vw,14px); }
-  .grid{ display:grid; grid-template-columns:1fr; gap:14px; } @media (min-width:760px){ .grid{ grid-template-columns:1fr 1fr; } }
-  .letter-card{ background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.65)), var(--card);
-                border:1px solid rgba(0,0,0,.06); border-radius:20px; padding:18px; position:relative; overflow:hidden; }
-  .letter-card::after{ content:""; position:absolute; inset:0; pointer-events:none;
-                       background:radial-gradient(400px 120px at 80% 0%, var(--ring), transparent 60%),
-                                  radial-gradient(220px 90px at 10% 100%, var(--ring), transparent 60%);
-                       mix-blend-mode:plus-lighter; }
-  .badge{ display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:14px; background:rgba(255,255,255,.6);
-          border:1px dashed rgba(0,0,0,.15); padding:6px 10px; border-radius:999px; backdrop-filter:blur(6px); }
-  .h{ font-size:clamp(18px,2.8vw,22px); font-weight:800; margin:10px 0 6px; }
-  .muted{ color:var(--muted); font-size:13px }
-  .btn{ appearance:none; border:0; cursor:pointer; background:linear-gradient(180deg, var(--accent), #ff4f8f); color:#fff;
-        font-weight:800; letter-spacing:.2px; border-radius:14px; padding:12px 16px; width:100%;
-        box-shadow:0 8px 18px rgba(255,79,143,.35); transition:transform .06s ease, box-shadow .2s ease, filter .2s ease; }
-  .btn:hover{ transform:translateY(-1px); filter:brightness(1.02) } .btn:active{ transform:translateY(1px) }
-  .btn-ghost{ background:transparent; color:var(--text); border:1px solid rgba(0,0,0,.15); box-shadow:none; }
-  .lock{ color:var(--lock); font-weight:900; display:inline-flex; align-items:center; gap:8px; }
-  .ok{ color:var(--ok); font-weight:800 }
-  .row{ display:flex; gap:8px } .row>*{ flex:1 }
-  .modal{ position:fixed; inset:0; display:none; place-items:center; padding:18px; background:rgba(0,0,0,.45); z-index:50; }
-  .modal.open{ display:grid; }
-  .paper{ width:min(760px,100%); max-height:min(85vh, calc(var(--vh)*85)); background:#fff; color:#2c1f25; border-radius:18px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; }
-  @media (prefers-color-scheme: dark){ .paper{ background:#fffdfc; color:#2d2228; } }
-  .paper-head{ padding:14px 16px; display:flex; align-items:center; justify-content:space-between; background:repeating-linear-gradient(-45deg,#ffd9e6,#ffd9e6 10px,#ffe8f0 10px,#ffe8f0 20px); }
-  .paper-title{ font-weight:900; }
-  .x{ border:0; background:transparent; font-size:22px; cursor:pointer; line-height:1; }
-  .paper-body{ padding:20px; overflow:auto; background:linear-gradient(transparent 38px, rgba(255,107,158,.06) 38px) 0 0/100% 40px, #fff; }
-  /* Media (images) */
-  .media{ display:grid; gap:10px; margin:0 0 12px 0; }
-  .media img{ width:100%; display:block; border-radius:14px; }
-  .media .cap{ font-size:12px; color:#7a6b73; margin-top:2px; }
-  @media (min-width:680px){
-    .media.grid2{ grid-template-columns:1fr 1fr; }
-  }
-  .content{ white-space:pre-wrap; font-size:clamp(14px,2.4vw,16px); }
-  .hint{ font-size:12px; color:#7a6b73; margin-top:10px; }
-  .toast{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%); background:#111; color:#fff; padding:10px 14px; border-radius:999px; box-shadow:0 8px 18px rgba(0,0,0,.35); font-size:13px; display:none; z-index:60; }
-  .toast.show{ display:block; animation:fade .25s ease-out }
-  @keyframes fade{ from{ transform:translateX(-50%) translateY(6px); opacity:0 } }
+:root{color-scheme:dark;--bg:#070b1f;--bg2:#12204a;--fg:#f4f1e6;--mut:#a9b3d6;--card:rgba(255,255,255,.08);--bd:rgba(255,255,255,.16);--gold:#ffc94d;--acc:#ff8fb8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:'Prompt',system-ui,sans-serif;color:var(--fg);background:linear-gradient(var(--bg),var(--bg2) 70%,#0b2a4a);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
+radial-gradient(1.5px 1.5px at 10% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 30% 6%,#fff,transparent),radial-gradient(1px 1px at 55% 14%,#fff,transparent),radial-gradient(1.5px 1.5px at 75% 8%,#fff,transparent),radial-gradient(1px 1px at 90% 18%,#fff,transparent),radial-gradient(1px 1px at 20% 24%,#fff,transparent),radial-gradient(1px 1px at 65% 4%,#fff,transparent)}
+.wrap{max-width:760px;margin:0 auto;padding:16px;position:relative}
+h1{margin:6px 0 2px;font-size:1.7rem;text-align:center;color:var(--gold)}
+.sub{text-align:center;color:var(--mut);margin:0 0 12px;font-size:.9rem}
+.moon{position:absolute;right:18px;top:8px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffbe6,#f3e2a0);box-shadow:0 0 40px 10px rgba(255,240,170,.35)}
+.river{position:relative;height:clamp(260px,46vh,380px);border-radius:18px;overflow:hidden;border:1px solid var(--bd);background:linear-gradient(#0d2a52,#06162e)}
+.river::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,transparent 0 22px,rgba(255,255,255,.05) 22px 24px)}
+.k{position:absolute;left:0;width:64px;cursor:pointer;animation:drift linear infinite;z-index:1}
+.k>div{animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(255,190,70,.55))}
+.k.me{z-index:3}.k.me>div{filter:drop-shadow(0 0 14px #fff)}
+.k svg{width:100%;display:block}
+@keyframes drift{from{transform:translateX(-80px)}to{transform:translateX(calc(min(100vw,760px) + 10px))}}
+@keyframes bob{50%{transform:translateY(-4px) rotate(2deg)}}
+.flame{animation:fl .5s ease-in-out infinite alternate;transform-origin:50px 14px}
+@keyframes fl{to{transform:scale(.85,1.1)}}
+.stat{position:absolute;left:10px;bottom:8px;z-index:4;font-size:.8rem;background:rgba(0,0,0,.45);padding:3px 10px;border-radius:99px}
+.tip{position:absolute;z-index:6;left:50%;top:10px;transform:translateX(-50%);width:min(86%,320px);background:rgba(10,14,40,.92);border:1px solid var(--gold);border-radius:14px;padding:12px 14px;text-align:center;display:none}
+.tip b{color:var(--gold)}.tip p{margin:6px 0;white-space:pre-wrap;word-break:break-word}.tip small{color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-top:14px}
+h2{margin:0 0 10px;font-size:1.1rem}
+.types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.types button{background:rgba(255,255,255,.06);border:2px solid transparent;border-radius:12px;color:var(--fg);padding:6px 2px;font:inherit;font-size:.72rem;cursor:pointer}
+.types button[aria-pressed=true]{border-color:var(--gold);background:rgba(255,201,77,.15)}
+.types svg{width:100%;display:block}
+textarea,input{width:100%;margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:rgba(0,0,0,.3);color:var(--fg);font:inherit}
+textarea{resize:none;height:76px}
+.btn{margin-top:12px;width:100%;padding:12px;border:0;border-radius:99px;font:inherit;font-weight:600;color:#2a1700;background:linear-gradient(90deg,#ffd15c,#ff9f43);cursor:pointer}
+.btn:disabled{opacity:.5}
+.msg{min-height:1.2em;font-size:.85rem;color:var(--mut);margin:8px 0 0;text-align:center}
+.amts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.amts button{padding:6px 14px;border-radius:99px;border:1px solid var(--bd);background:transparent;color:var(--fg);font:inherit;cursor:pointer}
+.amts button[aria-pressed=true]{background:var(--gold);color:#2a1700}
+#qr{background:#fff;border-radius:12px;padding:6px;width:210px;margin:12px auto 6px}#qr svg{width:100%;display:block}
+.pp{text-align:center;font-size:.9rem}.pp button{margin-left:6px;border:1px solid var(--bd);background:transparent;color:var(--fg);border-radius:8px;padding:2px 8px;font:inherit;cursor:pointer}
+.foot{text-align:center;color:var(--mut);font-size:.75rem;margin:14px 0 8px}
+.ok{display:block;margin-top:12px;font-size:.8rem;color:var(--mut)}.ok input{width:auto;margin:0 6px 0 0}.ok a,.foot a{color:var(--gold)}
+.del{margin-top:6px;border:1px solid var(--bd);background:transparent;color:var(--fg);border-radius:8px;padding:4px 10px;font:inherit;cursor:pointer}
+dialog{max-width:min(92vw,520px);max-height:86vh;overflow:auto;background:#0f1634;color:var(--fg);border:1px solid var(--gold);border-radius:16px;font-size:.85rem}
+dialog::backdrop{background:rgba(0,0,0,.7)}dialog li{margin:6px 0}
+.stbar{margin:0 0 10px;padding:9px 14px;border-radius:12px;background:rgba(255,201,77,.14);border:1px solid var(--gold);font-size:.85rem;text-align:center}
+.an h2{color:var(--gold);text-align:center;margin-top:4px}
+#mt{position:fixed;inset:0;z-index:100;background:linear-gradient(var(--bg),var(--bg2));display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;overflow:auto}.mtc{max-width:480px}.mtm{color:var(--mut);font-size:.85rem}
+.purpose{text-align:center;font-size:.78rem;color:var(--mut);margin:-6px 0 12px}.purpose a{color:var(--gold)}
+.i{width:1.1em;height:1.1em;vertical-align:-.2em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.i.ok{color:var(--ok,#4cd07d)}.i.bad{color:var(--bad,#ff6b6b)}.i.warn{color:var(--gold,#ffc94d)}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol><symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol><symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></symbol><symbol id="i-flower" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/><path d="M12 7.5V9"/><path d="M7.5 12H9"/><path d="M16.5 12H15"/><path d="M12 16.5V15"/><path d="m8 8 1.88 1.88"/><path d="M14.12 9.88 16 8"/><path d="m8 16 1.88-1.88"/><path d="M14.12 14.12 16 16"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol><symbol id="i-checkc" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></symbol><symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-sdot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/></symbol></svg>
+<div id="mt" hidden><div class="mtc"><div style="font-size:3rem"><svg class="i" aria-hidden="true"><use href="#i-wrench"/></svg></div><h1 id="mt_t"></h1><p id="mt_b" style="white-space:pre-wrap;word-break:break-word"></p><p id="mt_e" class="mtm"></p>
+<a id="mt_l" class="btn" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none" hidden></a><p class="mtm">หน้านี้จะกลับมาให้ใช้งานเองเมื่อเปิดให้บริการ</p></div></div>
 <div class="wrap">
-  <div class="card">
-    <h1 class="title">ขอบคุณนะ</h1>
-    <p class="subtitle">มีจดหมายมาส่งให้คับบ</p>
+<div class="moon"></div>
+<h1><svg class="i" aria-hidden="true"><use href="#i-flame"/></svg> ลอยกระทงออนไลน์</h1>
+<p class="sub">เลือกกระทง เขียนคำอธิษฐาน แล้วปล่อยลอยไปกับทุกคน</p>
+<p class="purpose"><svg class="i" aria-hidden="true"><use href="#i-flask"/></svg> ระบบทดสอบสำหรับพัฒนาระบบรับปีใหม่ · เปิดเฉพาะช่วงเทศกาล · <a href="#" id="ab">วัตถุประสงค์ของเว็บไซต์</a></p>
 
-    <div class="grid">
-      <!-- Letter 1 -->
-      <section class="letter-card" id="card1">
-        <span class="badge">💌 จดหมายฉบับที่ 1</span>
-        <h3 class="h">“ขอบคุณช่วงเวลาดี ๆ”</h3>
-        <p class="muted">พร้อมเปิดอ่านได้ทันที</p>
-        <div class="row" style="margin-top:10px">
-          <button class="btn" id="open1">เปิดจดหมายฉบับที่ 1</button>
-        </div>
-      </section>
-
-      <!-- Letter 2 -->
-      <section class="letter-card" id="card2">
-        <span class="badge lock">🔒 จดหมายฉบับที่ 2 (ล็อกอยู่)</span>
-        <h3 class="h">“เก็บไว้เปิดพร้อมกัน”</h3>
-        <p class="muted" id="openAtWrap">จะเปิดได้ใน: <span id="openAt"></span></p>
-        <div id="countdownWrap" style="margin:8px 0 6px 0">
-          <span class="countdown" id="countdown">กำลังคำนวณเวลา...</span>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <button class="btn btn-ghost" id="open2">เปิดจดหมายฉบับที่ 2</button>
-        </div>
-        <p class="muted" id="lockNote" style="margin-top:8px">*ยังเปิดไม่ได้จนกว่าเราจะคบกันใหม่นะ</p>
-      </section>
-    </div>
-  </div>
+<div class="stbar" id="mtbar" hidden></div>
+<div class="stbar" id="stbar" hidden></div>
+<div class="river" id="river">
+  <div class="tip" id="tip"></div>
+  <div class="stat" id="stat">กำลังโหลด…</div>
 </div>
 
-<!-- Modal -->
-<div class="modal" id="modal">
-  <div class="paper" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="paper-head">
-      <strong class="paper-title" id="modalTitle">จดหมาย</strong>
-      <button class="x" id="close" aria-label="ปิดหน้าต่าง">✕</button>
-    </div>
-    <div class="paper-body">
-      <!-- รูปหลายรูปจะถูกแสดงใน div นี้ -->
-      <div class="media" id="modalMedia" style="display:none"></div>
-      <!-- รูปเดี่ยว (ยังรองรับของเดิม) -->
-      <img class="img" id="modalImg" alt="" style="display:none"/>
-      <div class="content" id="modalContent"></div>
-      <div class="hint" id="modalHint"></div>
-    </div>
-  </div>
+<div class="card">
+  <h2>1) เลือกกระทงของคุณ</h2>
+  <div class="types" id="types"></div>
+  <h2 style="margin-top:14px">2) เขียนคำอธิษฐาน</h2>
+  <textarea id="wish" maxlength="80" placeholder="ขอให้…"></textarea>
+  <input id="name" maxlength="20" placeholder="ชื่อ/ชื่อเล่น (ไม่ใส่ก็ได้)">
+  <label class="ok"><input type="checkbox" id="ok"> ฉันรับทราบและยินยอมตาม<a href="#" id="pv">นโยบายความเป็นส่วนตัว</a> (ห้ามใส่ข้อมูลส่วนตัวของตนเองหรือผู้อื่น)</label>
+  <button class="btn" id="go"><svg class="i" aria-hidden="true"><use href="#i-flower"/></svg> ลอยกระทง</button>
+  <p class="msg" id="msg"></p>
 </div>
 
-<div class="toast" id="toast">ยังไม่ถึงเวลาที่จะเปิดนะครับ 💫</div>
+<div class="card">
+  <h2><svg class="i" aria-hidden="true"><use href="#i-heart"/></svg> สมทบทุนผู้พัฒนา (PromptPay)</h2>
+  <div class="amts" id="amts"></div>
+  <div id="qr"></div>
+  <div class="pp">พร้อมเพย์ <b id="ppn">061-514-4932</b><button id="cp">คัดลอก</button></div>
+  <p class="msg">ตามกำลังใจ ไม่บังคับ ขอบคุณที่ช่วยให้เว็บนี้อยู่ต่อไป</p>
+</div>
 
+<p class="foot">กระทงลอยอยู่ประมาณ 3–4 วัน และระบบจะเก็บกวาดกระทงเก่าอัตโนมัติเมื่อมีคนลอยเยอะ · <a href="#" id="pv2" onclick="document.getElementById('pv').click();return false">นโยบายความเป็นส่วนตัว</a> · <a href="#" onclick="document.getElementById('ab').click();return false">วัตถุประสงค์ของเว็บไซต์</a></p>
+<dialog id="about"><h2>วัตถุประสงค์ของเว็บไซต์</h2>
+<ul>
+<li><b>วัตถุประสงค์หลัก:</b> เว็บไซต์นี้จัดทำขึ้นเพื่อทดสอบระบบสำหรับการพัฒนาระบบรับปีใหม่ โดยใช้กิจกรรมลอยกระทงออนไลน์เป็นการทดสอบเบื้องต้น เพื่อประเมินการรองรับผู้ใช้งานจำนวนมากพร้อมกัน การแสดงผลร่วมกันแบบเรียลไทม์ การดูแลเนื้อหา การคุ้มครองข้อมูลส่วนบุคคล และระบบบริหารจัดการหลังบ้าน</li>
+<li><b>ช่วงเวลาให้บริการ:</b> เปิดให้ใช้งานเฉพาะช่วงเทศกาลสำคัญเท่านั้น นอกช่วงดังกล่าวจะปิดปรับปรุงระบบเป็นระยะเพื่อพัฒนาและทดสอบอย่างต่อเนื่อง โดยจะแจ้งกำหนดการล่วงหน้าบนหน้าเว็บไซต์ทุกครั้งเท่าที่สามารถทำได้</li>
+<li><b>การใช้ข้อมูล:</b> ข้อมูลที่เกิดจากการใช้งานใช้เพื่อวัดประสิทธิภาพและความเสถียรของระบบ การป้องกันการใช้งานในทางที่ผิด และการดูแลเนื้อหาให้เหมาะสมเท่านั้น ไม่ใช้เพื่อการโฆษณา และจะถูกลบตามระยะเวลาที่กำหนดไว้ในนโยบายความเป็นส่วนตัว</li>
+<li><b>ข้อจำกัดของระบบทดสอบ:</b> เนื่องจากเป็นระบบที่อยู่ระหว่างการพัฒนา อาจเกิดข้อขัดข้อง ข้อมูลคลาดเคลื่อน หรือมีการปรับเปลี่ยนการทำงานโดยไม่ได้แจ้งล่วงหน้า และไม่รับประกันความต่อเนื่องของการให้บริการ</li>
+<li><b>การสมทบทุน:</b> เป็นการสนับสนุนผู้พัฒนาระบบโดยสมัครใจ ไม่มีผลต่อสิทธิ์หรือลำดับการใช้งานใด ๆ</li>
+<li><b>ติดต่อผู้พัฒนา:</b> <span id="ct2"></span></li>
+</ul>
+<button class="btn" id="abx" type="button" style="background:var(--card);color:var(--fg)">ปิด</button></dialog>
+<dialog id="ann" class="an"><h2 id="an_t"></h2><p id="an_b" style="white-space:pre-wrap;word-break:break-word"></p>
+<a id="an_l" class="btn" target="_blank" rel="noopener noreferrer" style="display:block;text-align:center;text-decoration:none" hidden></a>
+<button class="btn" id="an_x" type="button" style="background:var(--card);color:var(--fg)">ปิด</button></dialog>
+<dialog id="priv"><h2>นโยบายความเป็นส่วนตัว (PDPA)</h2>
+<ul>
+<li><b>ข้อมูลที่เก็บ:</b> ชนิดกระทง คำอธิษฐาน ชื่อ/ชื่อเล่น (ถ้ากรอก) เวลาที่ลอย และรหัสสุ่มนิรนามเพื่อจำกัดการลอยถี่ ๆ (เก็บแบบเข้ารหัสทางเดียว ระบุตัวตนไม่ได้) และรหัสนิรนามจากเครือข่าย (IP ที่ผ่านการเข้ารหัสแบบ HMAC ด้วยกุญแจลับที่ผู้ดูแลเข้าถึงไม่ได้ แปลงกลับเป็น IP ไม่ได้) ใช้เพื่อป้องกันสแปมและการเลี่ยงการระงับสิทธิ์เท่านั้น</li>
+<li><b>ไม่เก็บ:</b> ที่อยู่ IP ดิบ ตำแหน่ง อีเมล เบอร์โทร และไม่ใช้คุกกี้โฆษณาหรือการติดตามใด ๆ</li>
+<li><b>วัตถุประสงค์:</b> แสดงกระทงให้ผู้เข้าชมคนอื่นเห็น ป้องกันการใช้งานผิดปกติ และดูแลเนื้อหาให้เหมาะสม รวมถึงทดสอบความเสถียรของระบบเพื่อการพัฒนาระบบรับปีใหม่</li>
+<li><b>ฐานทางกฎหมาย:</b> ความยินยอมของคุณ ซึ่งถอนได้ทุกเมื่อ</li>
+<li><b>ใครเห็นข้อมูล:</b> ผู้เข้าชมทุกคนเห็นคำอธิษฐานและชื่อที่คุณกรอก ผู้ดูแลระบบเข้าถึงได้เพื่อตรวจเนื้อหา ข้อมูลประมวลผลบน Google (Apps Script/Sheets) ซึ่งเซิร์ฟเวอร์อาจอยู่นอกประเทศไทย</li>
+<li><b>ระยะเวลาเก็บ:</b> ลบอัตโนมัติภายใน 4 วัน (หรือเร็วกว่านั้นเมื่อมีผู้ใช้จำนวนมาก)</li>
+<li><b>สิทธิของคุณ:</b> กดปุ่ม “ลบกระทงของฉัน” ที่กระทงของคุณได้ทันที (ใช้ได้บนเครื่องที่ลอย) หรือติดต่อ <span id="ct"></span> เพื่อขอเข้าถึง แก้ไข หรือลบข้อมูล</li>
+<li><b>กติกา:</b> ห้ามเนื้อหาหยาบคาย ดูหมิ่น เกลียดชัง สแปม หรือข้อมูลส่วนตัวของผู้อื่น</li>
+<li><b>การระงับสิทธิ์:</b> หากฝ่าฝืนกติกา ผู้ดูแลอาจระงับการลอยกระทงจากรหัสนิรนามของอุปกรณ์ โดยบันทึกเพียงรหัสแฮช เหตุผลแบบสั้น และวันหมดอายุ (สูงสุด 90 วัน แล้วลบอัตโนมัติ) ไม่เก็บ IP ดิบหรือข้อมูลที่ระบุตัวตน (รหัสเครือข่ายหมดอายุไม่เกิน 14 วัน) ผู้ถูกระงับขอทบทวนได้โดยแจ้งรหัสอุทธรณ์ที่ขึ้นบนหน้าจอ (ฐานประโยชน์โดยชอบด้วยกฎหมายเพื่อป้องกันการใช้งานในทางที่ผิด)</li>
+<li><b>ผู้เยาว์:</b> ควรได้รับความยินยอมจากผู้ปกครองก่อนใช้งาน</li>
+</ul>
+<button class="btn" id="wipe" type="button">ลบกระทงทั้งหมดของฉันบนเครื่องนี้</button>
+<button class="btn" id="pvx" type="button" style="background:var(--card);color:var(--fg)">ปิด</button></dialog>
+</div>
+
+<script>window.LK_CONFIG={API_URL:"",CONTACT:"privacy@example.com"};</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
-/* ========= CONFIG =========
-   - ตั้งเวลาเปิดจดหมาย #2: unlockAtISO (ISO8601 +07:00)
-   - รูปเดียว: imageSrc
-   - หลายรูป: images = [{src, alt, caption}]
-   - ถ้ามี images จะถูกใช้แทน imageSrc
-   - DEV_PREVIEW: true = ทดสอบเปิดก่อนเวลา
-   - HIDE_OPEN_DATETIME / HIDE_COUNTDOWN: ซ่อนข้อความ/นับถอยหลัง
-=========================== */
-const CONFIG = {
-  pageTitle: "ขอบคุณสำหรับ 7 เดือนนะครับ",
-  DEV_PREVIEW: false,
-  HIDE_OPEN_DATETIME: true,
-  HIDE_COUNTDOWN: true,
-  letter1: {
-    title: "จดหมายฉบับที่ 1",
-    imageSrc: "",
-    content: `💌 ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ
-รอบนี้อาจจะมาช้าไปหน่อยแล้วก็ไม่รู้ว่าเราจะได้ทำให้อีกเมื่อไหร่
-แต่ก็จะรอน้องกลับมาเปิดจดหมายอีกซองพร้อมๆกับเรานะครับ
+(function(){
+const {API_URL,CONTACT}=window.LK_CONFIG;
+const DAY=864e5, MAXQ=120, COOL=30000;
+const TYPES=[{id:'lotus',n:'ดอกบัว'},{id:'leaf',n:'ใบตอง'},{id:'bread',n:'ขนมปัง'},{id:'gold',n:'ดอกไม้ทอง'}];
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+function icon(n,c){const s=document.createElementNS(NS,'svg');s.setAttribute('class','i'+(c?' '+c:''));s.setAttribute('aria-hidden','true');const u=document.createElementNS(NS,'use');u.setAttribute('href','#i-'+n);s.appendChild(u);return s}
+const river=$('river'),tip=$('tip'),stat=$('stat'),msg=$('msg');
+let sel='lotus',db=null,uid=null,life=4*DAY,docs=[],els=new Map(),mine=new Set();
 
-เราไม่รู้หรอกว่าที่ผ่านมาน้องจะรักเราจริงรึเปล่า หรือจะแอบคุยกับใคร
-แต่เรามีความสุขมากๆ ตลอดเวลาที่ผ่านมา เรารักน้องมากๆ
-การจากกันครั้งนี้เราไม่บอกลาหรอกนะ :)
-
-เพราะเราคิดว่ายังไงเราก็ต้องกลับมาเจอกัน เราจะรอวันนั้นนะ
-เพราะว่าเรายังมีอีกหลายๆ ที่ ที่เราสัญญาว่าจะไปด้วยกัน
-หลายอย่างที่ยังไม่ได้ทำด้วยกันเลย เพราะงั้นเราจะรอน้องกลับมาทำไปพร้อมกับเรานะครับ
-
-รักน้องเพลงเสมอ
-จาก โอ๊ค
-
-ป.ล. เราตั้งใจเขียนจดหมายทั้ง 2 ฉบับนี้มากๆ เลยนะครับ
-อยากให้น้องได้อ่านทั้ง 2 ฉบับ แต่ขอเก็บอีกฉบับไว้เปิดพร้อมกันกับน้องเพลงนะครับ 😉`
-  },
-  letter2: {
-    title: "จดหมายฉบับที่ 2",
-    unlockAtISO: "2025-12-01T20:00:00+07:00",
-    /* เลือกอย่างใดอย่างหนึ่ง:
-       1) รูปเดียว */
-    imageSrc: "",
-    /* 2) หลายรูป */
-    images: [
-      // ตัวอย่าง:
-      // { src: "images/us-2a.jpg", alt: "เราในวันพิเศษ", caption: "ค่ำคืนที่ (…)" },
-      // { src: "images/us-2b.jpg", alt: "โต๊ะอาหาร", caption: "มื้อที่ชอบที่สุดของเรา" }
-    ],
-    content: `แอบเปิดอ่านหรอเราบอกแล้วไงว่าถ้าอยากอ่าน
-    ก็ต้องกลับมาคบกันเท่านั้นเราไม่ให้แอบอ่านด้วย`
-  }
-};
-/* ========================= */
-
-document.title = CONFIG.pageTitle || document.title;
-
-/* fix 100vh on mobile */
-const setVh = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight*0.01}px`);
-setVh(); addEventListener('resize', setVh);
-
-/* Elements */
-const open1Btn = document.getElementById('open1');
-const open2Btn = document.getElementById('open2');
-const modal = document.getElementById('modal');
-const closeBtn = document.getElementById('close');
-const modalTitle = document.getElementById('modalTitle');
-const modalContent = document.getElementById('modalContent');
-const modalImg = document.getElementById('modalImg');
-const modalMedia = document.getElementById('modalMedia');
-const modalHint = document.getElementById('modalHint');
-const toast = document.getElementById('toast');
-
-/* Utils */
-function openModal({title, content, img, images, hint}){
-  modalTitle.textContent = title || "จดหมาย";
-  modalContent.textContent = content || "";
-  // แสดง “หลายรูป” ถ้ามี images
-  if (Array.isArray(images) && images.length > 0){
-    modalMedia.innerHTML = images.map(({src, alt, caption})=>{
-      const cap = caption ? `<div class="cap">${caption}</div>` : "";
-      const safeAlt = alt || "";
-      return `<figure><img src="${src}" alt="${safeAlt}">${cap}</figure>`;
-    }).join("");
-    modalMedia.style.display = "grid";
-    // layout 2 คอลัมน์อัตโนมัติเมื่อรูป >= 2
-    modalMedia.classList.toggle('grid2', images.length >= 2);
-    modalImg.style.display = "none";
+function svg(t){
+  const cand='<rect x="48" y="14" width="4" height="22" rx="1" fill="#fff6d8"/><ellipse class="flame" cx="50" cy="10" rx="4" ry="7" fill="#ffb300"/>';
+  let b='';
+  if(t==='lotus'){
+    b='<ellipse cx="50" cy="60" rx="40" ry="8" fill="#2e8b57"/>';
+    [-60,-30,0,30,60].forEach(a=>b+=`<ellipse cx="50" cy="46" rx="9" ry="18" fill="#ff8fb8" stroke="#fff" stroke-width="1" transform="rotate(${a} 50 58)"/>`);
+    b+='<ellipse cx="50" cy="52" rx="7" ry="10" fill="#ffc2da" stroke="#fff"/>';
+  }else if(t==='leaf'){
+    b='<ellipse cx="50" cy="58" rx="42" ry="12" fill="#3c9a4a"/><ellipse cx="50" cy="58" rx="34" ry="8" fill="#2a7a38"/>';
+    [[22,54,'#ffd54f'],[36,50,'#ff9800'],[64,50,'#ffd54f'],[78,54,'#ff9800'],[50,46,'#fff']].forEach(p=>b+=`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${p[2]}"/>`);
+  }else if(t==='bread'){
+    b='<ellipse cx="50" cy="58" rx="38" ry="12" fill="#e2b062"/><ellipse cx="50" cy="55" rx="32" ry="8" fill="#f3cf8a"/>';
+    for(let i=0;i<6;i++)b+=`<path d="M${22+i*11} 56q3 -4 6 0" stroke="#b9873a" fill="none"/>`;
+    b+='<circle cx="30" cy="48" r="5" fill="#ff9800"/><circle cx="70" cy="48" r="5" fill="#ff9800"/><circle cx="50" cy="43" r="5" fill="#ffd54f"/>';
   }else{
-    // ไม่ได้ใช้หลายรูป -> ใช้รูปเดี่ยว (ถ้ามี)
-    modalMedia.style.display = "none";
-    modalMedia.innerHTML = "";
-    if (img){
-      modalImg.src = img; modalImg.style.display = "block";
-    }else{
-      modalImg.removeAttribute('src'); modalImg.style.display = "none";
-    }
+    b='<ellipse cx="50" cy="60" rx="40" ry="8" fill="#b71c1c"/>';
+    [-50,-25,0,25,50].forEach(a=>b+=`<ellipse cx="50" cy="46" rx="8" ry="17" fill="#ffd54f" stroke="#ff9800" transform="rotate(${a} 50 58)"/>`);
+    b+='<ellipse cx="50" cy="54" rx="9" ry="6" fill="#ff9800"/>';
   }
-  modalHint.textContent = hint || "";
-  modal.classList.add('open');
+  return `<svg viewBox="0 0 100 70">${b}${cand}</svg>`;
 }
-function closeModal(){ modal.classList.remove('open'); }
-closeBtn.addEventListener('click', closeModal);
-modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function ago(ts){const m=Math.floor((Date.now()-ts)/6e4);return m<1?'เมื่อสักครู่':m<60?m+' นาทีที่แล้ว':m<1440?Math.floor(m/60)+' ชั่วโมงที่แล้ว':Math.floor(m/1440)+' วันที่แล้ว'}
 
-/* Letter 1 */
-open1Btn.addEventListener('click', ()=>{
-  openModal({
-    title: CONFIG.letter1.title,
-    content: CONFIG.letter1.content,
-    img: (CONFIG.letter1.imageSrc||"").trim() || null,
-    images: [], // ไม่ใช้
-    hint: "อ่านแล้วเก็บไว้ในใจนะ 💗"
-  });
-});
+// type picker
+const tb=$('types');
+TYPES.forEach(t=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-pressed',t.id===sel);b.innerHTML=svg(t.id)+'<span></span>';b.lastChild.textContent=t.n;
+  b.onclick=()=>{sel=t.id;[...tb.children].forEach(x=>x.setAttribute('aria-pressed',x===b))};tb.appendChild(b)});
 
-/* Letter 2 Lock Logic */
-const unlockDate = new Date(CONFIG.letter2.unlockAtISO);
-const openAtEl   = document.getElementById('openAt');
-const openAtWrap = document.getElementById('openAtWrap');
-const countdownEl   = document.getElementById('countdown');
-const countdownWrap = document.getElementById('countdownWrap');
-const lockNote = document.getElementById('lockNote');
-
-function formatThaiDate(d){
-  try{ return d.toLocaleString('th-TH',{dateStyle:'full', timeStyle:'short', timeZone:'Asia/Bangkok'}); }
-  catch{ return d.toLocaleString(); }
+function place(d){
+  const h=hash(d.id),dur=70+h%50,top=6+(h%1000)/1000*(river.clientHeight-100);
+  const el=document.createElement('div');el.className='k'+(mine.has(d.id)?' me':'');
+  el.style.top=top+'px';el.style.animationDuration=dur+'s';
+  el.style.animationDelay='-'+(((Date.now()-d.ts)/1000+h%dur)%dur)+'s';
+  el.innerHTML='<div>'+svg(d.type)+'</div>';
+  el.onclick=e=>{e.stopPropagation();showTip(d)};
+  river.appendChild(el);els.set(d.id,el);
 }
-
-/* ซ่อน/แสดง บรรทัดเวลา + นับถอยหลัง */
-if (CONFIG.HIDE_OPEN_DATETIME) openAtWrap?.style.setProperty('display','none');
-else openAtEl.textContent = formatThaiDate(unlockDate);
-if (CONFIG.HIDE_COUNTDOWN) countdownWrap?.style.setProperty('display','none');
-
-let unlocked = false;
-function updateCountdown(){
-  const now = new Date();
-  let diff = unlockDate - now;
-  if (CONFIG.DEV_PREVIEW) diff = -1;
-  if (diff <= 0){
-    unlocked = true;
-    lockNote.innerHTML = `<span class="ok">พร้อมเปิดแล้ว ✨</span>`;
-    if (!CONFIG.HIDE_COUNTDOWN && countdownEl){
-      countdownEl.innerHTML = `<span class="ok">พร้อมเปิดแล้ว ✨</span>`;
-    }
-    return;
-  }
-  if (!CONFIG.HIDE_COUNTDOWN && countdownEl){
-    const s = Math.floor(diff/1000)%60;
-    const m = Math.floor(diff/1000/60)%60;
-    const h = Math.floor(diff/1000/60/60)%24;
-    const d = Math.floor(diff/1000/60/60/24);
-    countdownEl.textContent = `${d} วัน ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  }
+function showTip(d){
+  tip.replaceChildren();
+  const t=TYPES.find(x=>x.id===d.type)||TYPES[0];
+  const a=document.createElement('b');a.replaceChildren(icon('flame'),' กระทง'+t.n);
+  const p=document.createElement('p');p.textContent=d.wish?'“'+d.wish+'”':'(ไม่ได้เขียนคำอธิษฐาน)';
+  const s=document.createElement('small');s.textContent=(d.name?'โดย '+d.name+' · ':'')+ago(d.ts);
+  tip.append(a,p,s);if(mine.has(d.id)){const x=document.createElement('button');x.replaceChildren(icon('trash'),' ลบกระทงของฉัน');x.className='del';x.onclick=ev=>{ev.stopPropagation();delMine(d)};tip.append(document.createElement('br'),x)}tip.style.display='block';
 }
-updateCountdown();
-setInterval(updateCountdown, 1000);
+river.onclick=()=>{tip.style.display='none'};
 
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=> toast.classList.remove('show'), 2000);
+function render(){
+  const now=Date.now(),vis=window.innerWidth<600?24:45;
+  const live=docs.filter(d=>now-d.ts<life).sort((a,b)=>b.ts-a.ts);
+  const show=new Map();
+  live.filter(d=>mine.has(d.id)).concat(live).forEach(d=>{if(show.size<vis)show.set(d.id,d)});
+  els.forEach((el,id)=>{if(!show.has(id)){el.remove();els.delete(id)}});
+  show.forEach((d,id)=>{if(!els.has(id))place(d)});
+  stat.replaceChildren(icon('flame'),' '+'กระทงที่กำลังลอย '+live.length+' ใบ'+(net==='demo'?' (โหมดทดลองบนเครื่องนี้ ยังไม่ได้เชื่อมต่อเซิร์ฟเวอร์)':net==='off'?' · ออฟไลน์: แสดงข้อมูลล่าสุดที่บันทึกไว้ กระทงใหม่จะซิงก์เมื่อเชื่อมต่อได้':''));
 }
 
-open2Btn.addEventListener('click', ()=>{
-  if (!unlocked){
-    showToast('ยังให้เปิดไม่ได้นะ💫');
-    return;
+const aid=(()=>{let a=localStorage.getItem('lk_aid');if(!a){a=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());try{localStorage.setItem('lk_aid',a)}catch(e){}}return a})();
+let tokens={};try{tokens=JSON.parse(localStorage.getItem('lk_tok')||'{}')}catch(e){}
+const saveTok=()=>{try{localStorage.setItem('lk_tok',JSON.stringify(tokens))}catch(e){}};
+function load(){let a=[];try{a=JSON.parse(localStorage.getItem('lk_local')||'[]')}catch(e){}return a}
+// ---------- โหมดสำรอง: ใช้เว็บได้ตลอดแม้เชื่อมต่อ GAS ไม่ได้ ----------
+let srv=[],pending=[],delq=[],net=API_URL?'wait':'demo',polling=false;
+try{pending=JSON.parse(localStorage.getItem('lk_pend')||'[]').filter(p=>Date.now()-p.ts<DAY)}catch(e){}
+try{delq=JSON.parse(localStorage.getItem('lk_del')||'[]')}catch(e){}
+const savePend=()=>{try{localStorage.setItem('lk_pend',JSON.stringify(pending))}catch(e){}};
+const saveDel=()=>{try{localStorage.setItem('lk_del',JSON.stringify(delq))}catch(e){}};
+function rebuild(){docs=srv.concat(pending.map(p=>({id:p.id,type:p.type,wish:p.wish,name:p.name,ts:p.ts})))}
+async function jfetch(url,opt,ms){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(url,{...opt,signal:c.signal});return await r.json()}finally{clearTimeout(t)}}
+async function post(o,ms){return jfetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)},ms||15000)}
+function useCache(){try{const c=JSON.parse(localStorage.getItem('lk_cache')||'null');if(c&&Date.now()-c.t<DAY){srv=c.items||[];life=c.life||life}}catch(e){}}
+async function flush(){
+  for(const x of delq.slice()){try{const r=await post({action:'del',id:x.id,token:x.token},8000);if(r.ok||r.err==='auth')delq=delq.filter(y=>y!==x);else break}catch(e){break}}
+  saveDel();
+  for(const p of pending.slice()){
+    try{
+      const r=await post({action:'add',aid,cid:p.id,type:p.type,wish:p.wish,name:p.name});
+      if(r.ok){tokens[r.id]=r.token;mine.add(r.id);delete tokens[p.id];mine.delete(p.id);srv.push({id:r.id,type:p.type,wish:p.wish,name:p.name,ts:r.ts||p.ts});saveTok()}
+      else if(['rate','busy','maintenance','closed','server'].includes(r.err))break;
+      pending=pending.filter(x=>x!==p);
+    }catch(e){break}
   }
-  const imgs = Array.isArray(CONFIG.letter2.images) ? CONFIG.letter2.images : [];
-  openModal({
-    title: CONFIG.letter2.title,
-    content: CONFIG.letter2.content,
-    // ถ้ามี images จะถูกใช้แทน imageSrc
-    images: imgs.length ? imgs : [],
-    img: imgs.length ? null : ((CONFIG.letter2.imageSrc||"").trim() || null),
-    hint: "ดีใจที่ได้เปิดอ่านนะ 💞"
-  });
-});
+  savePend();
+}
+let st={open:true},mt={active:false};
+function applyMaint(){
+  const f=t=>new Date(t).toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'});
+  $('mt').hidden=!mt.active;document.body.style.overflow=mt.active?'hidden':'';
+  if(mt.active){$('mt_t').textContent=mt.title||'ปิดปรับปรุงระบบชั่วคราว';$('mt_b').textContent=mt.msg||'เว็บไซต์นี้เป็นระบบทดสอบที่เปิดให้ใช้งานเฉพาะช่วงเทศกาล นอกช่วงดังกล่าวจะปิดปรับปรุงเป็นระยะ ขออภัยในความไม่สะดวก';
+    $('mt_e').textContent=mt.endAt?'คาดว่าจะกลับมาเปิดให้บริการ '+f(mt.endAt):'';
+    const l=$('mt_l');if(/^https:\/\//.test(mt.linkUrl||'')){l.hidden=false;l.href=mt.linkUrl;l.textContent=mt.linkText||'ดูรายละเอียด'}else l.hidden=true}
+  const nb=$('mtbar'),up=!mt.active&&mt.upcoming;nb.hidden=!up;
+  if(up)nb.replaceChildren(icon('wrench'),' '+'เว็บจะปิดปรับปรุงวันที่ '+f(mt.startAt)+(mt.endAt?' ถึง '+f(mt.endAt):'')+(mt.msg?' · '+mt.msg:''));
+}
+const annSeen=new Set();let annQ=[];
+function annKey(a){return 'lk_ann_'+a.id+'_'+a.ver}
+function annOk(a){const k=annKey(a);if(annSeen.has(k))return false;let v=null;try{v=localStorage.getItem(k)}catch(e){}
+  if(a.freq==='always')return true;if(a.freq==='daily')return !v||Date.now()-(+v)>864e5;return !v}
+function showAnn(list){list.forEach(a=>{if(annOk(a)&&!annQ.some(x=>x.id===a.id))annQ.push(a)});if(annQ.length&&!$('ann').open&&!$('priv').open)nextAnn()}
+function nextAnn(){const a=annQ.shift();if(!a)return;annSeen.add(annKey(a));try{localStorage.setItem(annKey(a),String(Date.now()))}catch(e){}
+  $('an_t').textContent=a.title;$('an_b').textContent=a.body;const l=$('an_l');
+  if(/^https:\/\//.test(a.linkUrl||'')){l.hidden=false;l.href=a.linkUrl;l.textContent=a.linkText||'ดูรายละเอียด'}else l.hidden=true;
+  $('ann').showModal()}
+$('an_x').onclick=()=>$('ann').close();
+$('ann').addEventListener('close',nextAnn);
+function applyStatus(){
+  const bar=$('stbar'),f=t=>new Date(t).toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'});
+  let t='',ico='';
+  if(!st.open){
+    if(st.mode==='closed'){t='ขณะนี้ปิดการลอยกระทงชั่วคราว';ico='pause'}
+    else if(st.openAt&&Date.now()<st.openAt){t='จะเปิดให้ลอยกระทงวันที่ '+f(st.openAt);ico='hourglass'}
+    else{t='ปิดการลอยกระทงแล้ว ขอบคุณที่ร่วมลอยกระทง (ยังชมกระทงของทุกคนได้)';ico='moon'}
+  }else if(st.mode==='auto'&&st.closeAt){t='เปิดให้ลอยกระทงถึง '+f(st.closeAt);ico='flame'}
+  if(st.msg)t+=(t?' · ':'')+st.msg;
+  bar.hidden=!t;bar.replaceChildren(...(ico&&t?[icon(ico),' ']:[]),t);$('go').disabled=!st.open;
+}
+async function poll(){
+  if(document.hidden||polling)return;polling=true;
+  try{
+    const j=await jfetch(API_URL+'?action=list&_='+Date.now(),{},8000);
+    if(!j||!j.ok)throw 0;
+    net='ok';srv=j.items||[];life=j.life||life;
+    try{localStorage.setItem('lk_cache',JSON.stringify({t:Date.now(),items:srv,life}))}catch(e){}
+    if(j.status)st=j.status;if(j.maint)mt=j.maint;
+    applyStatus();applyMaint();if(j.ann&&!mt.active)showAnn(j.ann);
+    await flush();
+  }catch(e){
+    net='off';st={open:true};mt={active:false};applyStatus();applyMaint(); // เชื่อมต่อไม่ได้ = ไม่บล็อกผู้ใช้
+  }
+  rebuild();Object.keys(tokens).forEach(id=>mine.add(id));render();polling=false;
+}
+function init(){
+  Object.keys(tokens).forEach(id=>mine.add(id));pending.forEach(p=>mine.add(p.id));
+  if(!API_URL){docs=load();docs.forEach(d=>mine.add(d.id));render();return}
+  useCache();rebuild();render();
+  poll();setInterval(poll,20000);
+  document.addEventListener('visibilitychange',poll);addEventListener('online',poll);
+}
+async function delMine(d){
+  const local=pending.some(p=>p.id===d.id),tk=tokens[d.id];
+  if(local){pending=pending.filter(p=>p.id!==d.id);savePend()}
+  else if(API_URL&&tk){try{const r=await post({action:'del',id:d.id,token:tk},8000);if(!r.ok&&r.err!=='auth')throw 0}catch(e){delq.push({id:d.id,token:tk});saveDel()}} // ลบไม่สำเร็จ = เก็บคิวไว้ลบใหม่
+  srv=srv.filter(x=>x.id!==d.id);docs=docs.filter(x=>x.id!==d.id);delete tokens[d.id];mine.delete(d.id);saveTok();
+  if(!API_URL)try{localStorage.setItem('lk_local',JSON.stringify(docs))}catch(e){}
+  tip.style.display='none';rebuild();render();
+}
+$('ok').checked=localStorage.getItem('lk_ok')==='1';
+$('ok').onchange=()=>{try{localStorage.setItem('lk_ok',$('ok').checked?'1':'0')}catch(e){}};
+$('ct').textContent=CONTACT;$('ct2').textContent=CONTACT;
+$('ab').onclick=e=>{e.preventDefault();$('about').showModal()};
+$('abx').onclick=()=>$('about').close();
+$('pv').onclick=e=>{e.preventDefault();$('priv').showModal()};
+$('pvx').onclick=()=>$('priv').close();
+$('wipe').onclick=async()=>{for(const id of Object.keys(tokens))await delMine(docs.find(x=>x.id===id)||{id});$('wipe').replaceChildren(icon('check'),' ลบแล้ว')};
+
+$('go').onclick=async()=>{
+  if(!st.open){msg.textContent='ขณะนี้ปิดการลอยกระทง';return}
+  if(!$('ok').checked){msg.textContent='กรุณาติ๊กยอมรับนโยบายความเป็นส่วนตัวก่อน';return}
+  const last=+localStorage.getItem('lk_last')||0;
+  if(Date.now()-last<COOL){msg.textContent='รอสักครู่ แล้วลอยใบต่อไปได้ ('+Math.ceil((COOL-(Date.now()-last))/1000)+' วินาที)';return}
+  const wish=$('wish').value.trim().slice(0,80),name=$('name').value.trim().slice(0,20);
+  if(/\d[\d\s-]{7,}\d/.test(wish+name)||/\S+@\S+/.test(wish+name)){msg.textContent='กรุณาอย่าใส่เบอร์โทร เลขบัตร หรืออีเมลลงในกระทง';return}
+  const d={id:'L'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),type:sel,wish,name,ts:Date.now()};
+  const b=$('go');b.disabled=true;
+  try{
+    let queued=false;
+    if(API_URL){
+      let r=null;try{r=await post({action:'add',aid,cid:d.id,type:sel,wish,name})}catch(ne){}
+      if(r&&r.ok){d.id=r.id;d.ts=r.ts||d.ts;tokens[d.id]=r.token;saveTok();srv.push(d)}
+      else if(r&&r.err&&r.err!=='server'&&r.err!=='bad')throw r;
+      else{queued=true;pending.push({id:d.id,type:sel,wish,name,ts:d.ts});tokens[d.id]='pending';saveTok();savePend()}
+    }else{tokens[d.id]='local';saveTok();docs.push(d)}
+    mine.add(d.id);if(API_URL)rebuild();
+    if(!API_URL)try{localStorage.setItem('lk_local',JSON.stringify(docs.slice(-20)))}catch(e){}
+    localStorage.setItem('lk_last',String(Date.now()));
+    $('wish').value='';msg.replaceChildren(icon('flower'),' '+(queued?'กระทงลอยบนเครื่องนี้แล้ว (เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ จะซิงก์ให้คนอื่นเห็นเมื่อกลับมาออนไลน์)':'กระทงของคุณลอยแล้ว ขอให้สมปรารถนา'));render();showTip(d);
+    river.scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(e){
+    msg.textContent=e&&e.err==='banned'?'อุปกรณ์นี้ถูกระงับการลอยกระทงถึง '+new Date(e.until).toLocaleDateString('th-TH')+' เพราะฝ่าฝืนกติกา · รหัสอุทธรณ์ '+e.code+' (ติดต่อ '+CONTACT+')':e&&e.err==='maintenance'?'ขณะนี้ปิดปรับปรุงเว็บ':e&&e.err==='closed'?'ขณะนี้ปิดการลอยกระทงแล้ว':e&&e.err==='content'?'ข้อความมีคำที่ไม่เหมาะสม กรุณาแก้ไขแล้วลองใหม่':e&&e.err==='rate'?'ลอยถี่เกินไป รอสักครู่นะ':e&&e.err==='busy'?'คนลอยเยอะมาก ลองใหม่อีกครั้งในอีกสักครู่':'ลอยไม่สำเร็จ ลองใหม่อีกครั้ง';
+  }
+  b.disabled=!st.open;
+};
+
+// PromptPay
+const PP='0066615144932';
+function crc(s){let c=0xFFFF;for(let i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(let j=0;j<8;j++)c=c&0x8000?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return c.toString(16).toUpperCase().padStart(4,'0')}
+function payload(a){
+  let p='000201'+(a?'010212':'010211')+'29370016A000000677010111'+'0113'+PP+'5802TH5303764';
+  if(a){const s=a.toFixed(2);p+='54'+String(s.length).padStart(2,'0')+s}
+  p+='6304';return p+crc(p);
+}
+function qr(a){
+  const box=$('qr');
+  try{const q=qrcode(0,'M');q.addData(payload(a));q.make();box.innerHTML=q.createSvgTag({cellSize:4,margin:1,scalable:true})}
+  catch(e){box.style.display='none'}
+}
+const am=$('amts');let cur=0;
+[[0,'ตามใจ'],[20,'฿20'],[50,'฿50'],[100,'฿100']].forEach(([v,l])=>{
+  const b=document.createElement('button');b.type='button';b.textContent=l;b.setAttribute('aria-pressed',v===0);
+  b.onclick=()=>{cur=v;[...am.children].forEach(x=>x.setAttribute('aria-pressed',x===b));qr(v)};am.appendChild(b)});
+qr(0);
+$('cp').onclick=async()=>{try{await navigator.clipboard.writeText('0615144932');$('cp').textContent='คัดลอกแล้ว'}catch(e){$('cp').textContent='0615144932'}};
+
+render();init();
+window.addEventListener('resize',()=>{els.forEach(e=>e.remove());els.clear();render()});
+setInterval(render,60000);
+})();
 </script>
 </body>
 </html>
